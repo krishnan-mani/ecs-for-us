@@ -15,3 +15,18 @@ Pre-requisites
 - `virtualenv`
 - `git`
 - AWS credentials and privileges
+
+Workshop
+===
+
+Run API locally
+=====
+
+```
+$ virtualenv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+$ python ./example.py
+$ curl http://localhost:5000/example/
+
+```

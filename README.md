@@ -28,10 +28,10 @@ Workshop
 
 ```
 $ virtualenv venv
-$ source venv/bin/activate
+$ source venv/bin/activate # or `source venv/Scripts/activate` on Windows
 $ pip install -r requirements.txt
 $ python ./example.py
-$ curl http://localhost:5000/example/
+$ curl localhost:5000/example/
 
 ```
 
@@ -54,3 +54,28 @@ $ docker login
 $ docker push kmdemos/my-service:1
 
 ```
+
+- Create and register a task definition for the API
+
+```
+$ export AWS_REGION=eu-west-1
+$ export AWS_PROFILE=nonprod
+$ aws configure list
+$ aws sts get-caller-identity
+$ aws --region eu-west-1 ecs register-task-definition \
+    --cli-input-json file://task_definition.json
+
+```
+
+- Deploy the ECS cluster
+
+```
+$ aws cloudformation create-stack \
+    --stack-name ecs-workshop-manik \
+    --template-body file://template.json \
+    --parameters file://parameters.json \
+    --capabilities CAPABILITY_IAM
+
+```
+
+- TODO: Deploy our API to the cluster

@@ -1,0 +1,18 @@
+{
+
+    "family": "my-service",
+    "containerDefinitions": [
+        {
+            "name": "my-service",
+            "image": "kmdemos/my-service:1",
+            "cpu": 10,
+            "memory": 256,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000
+                }
+            ]
+        }
+    ]
+}

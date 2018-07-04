@@ -13,9 +13,13 @@ Pre-requisites
 
 - build and run Docker images locally
 - personal account on dockerhub.io
-- `virtualenv`
-- `git`
 - AWS credentials and privileges
+- Software installed
+    - `git`
+    - `curl`
+    - `docker`
+    - `docker-for-windows`
+    - `virtualenv`
 
 Workshop
 ===
@@ -31,7 +35,7 @@ $ curl http://localhost:5000/example/
 
 ```
 
-- Create and run Docker container for API
+- Create Docker image and run container locally
 
 ```
 $ docker ps
@@ -39,5 +43,14 @@ $ docker build . -t my-service:1
 $ docker images
 $ docker run -d -p 5000:5000 my-service:1
 $ curl 192.168.99.100:5000/example/
+
+```
+
+- Push the image to dockerhub registry
+
+```
+$ docker tag my-service:1 kmdemos/my-service:1
+$ docker login
+$ docker push kmdemos/my-service:1
 
 ```

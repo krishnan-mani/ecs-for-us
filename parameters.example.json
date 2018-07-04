@@ -10,5 +10,9 @@
     {
         "ParameterKey": "SubnetId",
         "ParameterValue": "[SUBNET-ID-1,SUBNET-ID-2]"
+    },
+    {
+        "ParameterKey": "Image",
+        "ParameterValue": "[DOCKER-REGISTRY-IMAGE]"
     }
 ]

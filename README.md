@@ -31,7 +31,7 @@ $ virtualenv venv
 $ source venv/bin/activate # or `source venv/Scripts/activate` on Windows
 $ pip install -r requirements.txt
 $ python ./example.py
-$ curl localhost:5000/example/
+$ curl --silent localhost:5000/example/
 
 ```
 
@@ -42,7 +42,7 @@ $ docker ps
 $ docker build . -t my-service:1
 $ docker images
 $ docker run -d -p 5000:5000 my-service:1
-$ curl 192.168.99.100:5000/example/
+$ curl --silent 192.168.99.100:5000/example/
 
 ```
 
@@ -75,6 +75,11 @@ $ aws cloudformation create-stack \
     --template-body file://template.json \
     --parameters file://parameters.json \
     --capabilities CAPABILITY_IAM
+
+$ aws cloudformation describe-stacks \
+    --stack-name ecs-workshop-manik \
+    --query "Stacks[0].Outputs"
+$ curl --silent [LOAD_BALANCER_DNS]
 
 ```
 

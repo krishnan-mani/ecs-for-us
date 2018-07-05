@@ -104,10 +104,15 @@ $ aws ecs update-service \
 
 ```
 
-- TODO: Deploy new version of the API
+- Deploy new version of the API
 
 ```bash
 # Change application code, build new Docker image version, and push
+$ docker build . -t my-service:2
+$ docker images
+$ docker tag [IMAGE_ID] kmdemos/my-service:2
+$ docker push kmdemos/my-service:2 
+
 # Update task definition
 # Update service
 

@@ -4,4 +4,3 @@
 - Template changes
     - change security group
     - move instances to private subnets
-    

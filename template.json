@@ -5,10 +5,6 @@
       "Type": "String",
       "Description": "Image for service to launch"
     },
-    "KeyName": {
-      "Type": "AWS::EC2::KeyPair::KeyName",
-      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the ECS instances."
-    },
     "VpcId": {
       "Type": "AWS::EC2::VPC::Id",
       "Description": "Select a VPC that allows instances to access the Internet."
@@ -121,18 +117,6 @@
         "IpProtocol": "tcp",
         "FromPort": "80",
         "ToPort": "80",
-        "CidrIp": "0.0.0.0/0"
-      }
-    },
-    "EcsSecurityGroupSSHinbound": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "EcsSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "22",
-        "ToPort": "22",
         "CidrIp": "0.0.0.0/0"
       }
     },
@@ -450,9 +434,6 @@
         },
         "IamInstanceProfile": {
           "Ref": "EC2InstanceProfile"
-        },
-        "KeyName": {
-          "Ref": "KeyName"
         },
         "UserData": {
           "Fn::Base64": {

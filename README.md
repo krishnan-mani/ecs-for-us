@@ -4,7 +4,6 @@ Outline
 - Create a container for a (simple) API
 - Create an ECS cluster with application load balancer
 - Deploy the API to ECS
-- Scale the API up
 - Make a change, and deploy a new version
 
 Pre-requisites
@@ -41,7 +40,9 @@ $ docker ps
 $ docker build . -t my-service:1
 $ docker images
 $ docker run -d -p 5000:5000 my-service:1
-$ curl --silent 192.168.99.100:5000/example/
+$ docker-machine ls # obtain the docker-machine name
+$ docker-machine ip [DOCKER_MACHINE_NAME]
+$ curl --silent [DOCKER_MACHINE_IP]:5000/example/
 
 ```
 
@@ -50,7 +51,7 @@ $ curl --silent 192.168.99.100:5000/example/
 ```bash
 $ docker tag my-service:1 kmdemos/my-service:1
 $ docker login
-$ docker push kmdemos/my-service:1
+$ docker push [DOCKERHUB_USERNAME]/my-service:1
 
 ```
 
@@ -61,17 +62,18 @@ $ export AWS_REGION=eu-west-1
 $ export AWS_PROFILE=nonprod
 $ aws configure list
 $ aws sts get-caller-identity
-$ aws --region eu-west-1 ecs register-task-definition \
-    --cli-input-json file://task_definition.json
 
 ```
 
 - Deploy the ECS cluster
 
 ```bash
+$ cp starter-parameters.json parameters.json
+# Edit parameters.json and supply the required information (from the `dev` environment)
+
 $ aws cloudformation create-stack \
     --stack-name ecs-workshop-manik \
-    --template-body file://template.json \
+    --template-body file://starter-template.json \
     --parameters file://parameters.json \
     --capabilities CAPABILITY_IAM
 
@@ -85,6 +87,9 @@ $ curl --silent [LOAD_BALANCER_DNS]
 - Deploy our API to the cluster
 
 ```bash
+$ cp starter-template.json template.json 
+# Edit this template.json file for all subsequent changes
+
 $ aws cloudformation update-stack \
     --stack-name ecs-workshop-manik \
     --template-body file://template.json \
@@ -100,7 +105,7 @@ $ curl --silent [LOAD_BALANCER_DNS]/example/
 $ aws ecs update-service \
     --service-arn [SERVICE_ARN] \
     --cluster [CLUSTER_NAME]
-    --desired-count 1
+    --desired-count 3
 
 ```
 
@@ -108,12 +113,14 @@ $ aws ecs update-service \
 
 ```bash
 # Change application code, build new Docker image version, and push
-$ docker build . -t my-service:2
-$ docker images
-$ docker tag [IMAGE_ID] kmdemos/my-service:2
+$ docker build . -t my-service:2 -t kmdemos/my-service:2
 $ docker push kmdemos/my-service:2 
 
-# Update task definition
-# Update service
+# update the template and the parameters, then update the stack
+$ aws cloudformation update-stack \
+    --stack-name ecs-workshop-manik \
+    --template-body file://template.json \
+    --parameters file://parameters.json \
+    --capabilities CAPABILITY_IAM  
 
 ```

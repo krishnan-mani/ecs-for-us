@@ -2,9 +2,8 @@ Outline
 ===
 
 - Create a container for a (simple) API
-- Create an ECS cluster
+- Create an ECS cluster with application load balancer
 - Deploy the API to ECS
-- Configure a load balancer, send traffic to the API
 - Scale the API up
 - Make a change, and deploy a new version
 
@@ -26,7 +25,7 @@ Workshop
 
 - Run API locally
 
-```
+```bash
 $ virtualenv venv
 $ source venv/bin/activate # or `source venv/Scripts/activate` on Windows
 $ pip install -r requirements.txt
@@ -37,7 +36,7 @@ $ curl --silent localhost:5000/example/
 
 - Create Docker image and run container locally
 
-```
+```bash
 $ docker ps
 $ docker build . -t my-service:1
 $ docker images
@@ -48,7 +47,7 @@ $ curl --silent 192.168.99.100:5000/example/
 
 - Push the image to dockerhub registry
 
-```
+```bash
 $ docker tag my-service:1 kmdemos/my-service:1
 $ docker login
 $ docker push kmdemos/my-service:1
@@ -57,7 +56,7 @@ $ docker push kmdemos/my-service:1
 
 - Create and register a task definition for the API
 
-```
+```bash
 $ export AWS_REGION=eu-west-1
 $ export AWS_PROFILE=nonprod
 $ aws configure list
@@ -69,7 +68,7 @@ $ aws --region eu-west-1 ecs register-task-definition \
 
 - Deploy the ECS cluster
 
-```
+```bash
 $ aws cloudformation create-stack \
     --stack-name ecs-workshop-manik \
     --template-body file://template.json \
@@ -83,4 +82,14 @@ $ curl --silent [LOAD_BALANCER_DNS]
 
 ```
 
-- TODO: Deploy our API to the cluster
+- Deploy our API to the cluster
+
+```bash
+$ aws cloudformation update-stack \
+    --stack-name ecs-workshop-manik \
+    --template-body file://template.json \
+    --parameters file://parameters.json \
+    --capabilities CAPABILITY_IAM
+$ curl --silent [LOAD_BALANCER_DNS]/example/    
+
+```

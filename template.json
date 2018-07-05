@@ -328,7 +328,7 @@
           {
             "Field": "path-pattern",
             "Values": [
-              "/example"
+              "/example/*"
             ]
           }
         ],
@@ -361,7 +361,7 @@
         "ListenerArn": {
           "Ref": "ALBListener"
         },
-        "Priority": 1
+        "Priority": 200
       }
     },
     "exampleTargetGroup": {
@@ -369,7 +369,7 @@
       "DependsOn": "ECSALB",
       "Properties": {
         "HealthCheckIntervalSeconds": 20,
-        "HealthCheckPath": "/example",
+        "HealthCheckPath": "/example/",
         "HealthCheckProtocol": "HTTP",
         "HealthCheckTimeoutSeconds": 5,
         "HealthyThresholdCount": 3,

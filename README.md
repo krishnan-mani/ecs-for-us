@@ -68,7 +68,7 @@ $ aws sts get-caller-identity
 - Deploy the ECS cluster
 
 ```bash
-$ cp starter-parameters.json parameters.json
+$ cp starter-parameters.example.json starter-parameters.json
 # Edit parameters.json and supply the required information (from the `dev` environment)
 
 $ aws cloudformation create-stack \

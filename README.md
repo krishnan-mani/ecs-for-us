@@ -93,3 +93,22 @@ $ aws cloudformation update-stack \
 $ curl --silent [LOAD_BALANCER_DNS]/example/    
 
 ```
+
+- Modify service (bump `DesiredCount`)
+
+```bash
+$ aws ecs update-service \
+    --service-arn [SERVICE_ARN] \
+    --cluster [CLUSTER_NAME]
+    --desired-count 1
+
+```
+
+- TODO: Deploy new version of the API
+
+```bash
+# Change application code, build new Docker image version, and push
+# Update task definition
+# Update service
+
+```

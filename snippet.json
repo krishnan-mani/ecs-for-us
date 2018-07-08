@@ -1,0 +1,95 @@
+{
+  "Resources": {
+    "APITaskDefinition": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "Family": "my-service",
+        "ContainerDefinitions": [
+          {
+            "Name": "my-service",
+            "Cpu": "10",
+            "Essential": true,
+            "Image": {
+              "Ref": "Image"
+            },
+            "Memory": "128",
+            "PortMappings": [
+              {
+                "ContainerPort": 5000
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "ECSMyServiceListenerRule": {
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+      "DependsOn": "ALBListener",
+      "Properties": {
+        "Actions": [
+          {
+            "Type": "forward",
+            "TargetGroupArn": {
+              "Ref": "ECSMyServiceTG"
+            }
+          }
+        ],
+        "Conditions": [
+          {
+            "Field": "path-pattern",
+            "Values": [
+              "/example/*"
+            ]
+          }
+        ],
+        "ListenerArn": {
+          "Ref": "ALBListener"
+        },
+        "Priority": 100
+      }
+    },
+    "ECSMyServiceTG": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "DependsOn": "ECSALB",
+      "Properties": {
+        "HealthCheckIntervalSeconds": 20,
+        "HealthCheckPath": "/example/",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 2,
+        "UnhealthyThresholdCount": 3,
+        "Name": "ECSMyServiceTG",
+        "Port": 80,
+        "Protocol": "HTTP",
+        "VpcId": {
+          "Ref": "VpcId"
+        }
+      }
+    },
+    "APIService": {
+      "Type": "AWS::ECS::Service",
+      "DependsOn": "ALBListener",
+      "Properties": {
+        "Cluster": {
+          "Ref": "ECSCluster"
+        },
+        "DesiredCount": 1,
+        "LoadBalancers": [
+          {
+            "ContainerName": "my-service",
+            "ContainerPort": 5000,
+            "TargetGroupArn": {
+              "Ref": "ECSMyServiceTG"
+            }
+          }
+        ],
+        "Role": {
+          "Ref": "ECSServiceRole"
+        },
+        "TaskDefinition": {
+          "Ref": "APITaskDefinition"
+        }
+      }
+    }
+  }
+}

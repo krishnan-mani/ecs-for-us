@@ -2,5 +2,5 @@
 - modify service
 - add autoscaling policy and test
 - Template changes
-    - change security group
     - move instances to private subnets
+- Reconcile starter template and later template versions

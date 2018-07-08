@@ -116,6 +116,20 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
+    "EcsSecurityGroupWhitelistALB": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "EcsSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "31000",
+        "ToPort": "61000",
+        "SourceSecurityGroupId": {
+          "Ref": "ECSALBSecurityGroup"
+        }
+      }
+    },
     "EcsSecurityGroupALBports": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
@@ -229,6 +243,15 @@
             "Name": "my-vol"
           }
         ]
+      }
+    },
+    "ECSALBSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for the ALB",
+        "VpcId": {
+          "Ref": "VpcId"
+        }
       }
     },
     "ECSALB": {

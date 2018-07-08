@@ -22,6 +22,49 @@
         ]
       }
     },
+    "APIService": {
+      "Type": "AWS::ECS::Service",
+      "DependsOn": "ALBListener",
+      "Properties": {
+        "Cluster": {
+          "Ref": "ECSCluster"
+        },
+        "DesiredCount": 1,
+        "LoadBalancers": [
+          {
+            "ContainerName": "my-service",
+            "ContainerPort": 5000,
+            "TargetGroupArn": {
+              "Ref": "ECSMyServiceTG"
+            }
+          }
+        ],
+        "Role": {
+          "Ref": "ECSServiceRole"
+        },
+        "TaskDefinition": {
+          "Ref": "APITaskDefinition"
+        }
+      }
+    },
+    "ECSMyServiceTG": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "DependsOn": "ECSALB",
+      "Properties": {
+        "HealthCheckIntervalSeconds": 20,
+        "HealthCheckPath": "/example/",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 2,
+        "UnhealthyThresholdCount": 3,
+        "Name": "ECSMyServiceTG",
+        "Port": 80,
+        "Protocol": "HTTP",
+        "VpcId": {
+          "Ref": "VpcId"
+        }
+      }
+    },
     "ECSMyServiceListenerRule": {
       "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
       "DependsOn": "ALBListener",
@@ -46,49 +89,6 @@
           "Ref": "ALBListener"
         },
         "Priority": 100
-      }
-    },
-    "ECSMyServiceTG": {
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-      "DependsOn": "ECSALB",
-      "Properties": {
-        "HealthCheckIntervalSeconds": 20,
-        "HealthCheckPath": "/example/",
-        "HealthCheckProtocol": "HTTP",
-        "HealthCheckTimeoutSeconds": 5,
-        "HealthyThresholdCount": 2,
-        "UnhealthyThresholdCount": 3,
-        "Name": "ECSMyServiceTG",
-        "Port": 80,
-        "Protocol": "HTTP",
-        "VpcId": {
-          "Ref": "VpcId"
-        }
-      }
-    },
-    "APIService": {
-      "Type": "AWS::ECS::Service",
-      "DependsOn": "ALBListener",
-      "Properties": {
-        "Cluster": {
-          "Ref": "ECSCluster"
-        },
-        "DesiredCount": 1,
-        "LoadBalancers": [
-          {
-            "ContainerName": "my-service",
-            "ContainerPort": 5000,
-            "TargetGroupArn": {
-              "Ref": "ECSMyServiceTG"
-            }
-          }
-        ],
-        "Role": {
-          "Ref": "ECSServiceRole"
-        },
-        "TaskDefinition": {
-          "Ref": "APITaskDefinition"
-        }
       }
     }
   }

@@ -64,7 +64,7 @@ $ docker push [USERNAME]/my-service:1
 
 ```
 
-- Deploy the ECS cluster
+- Deploy the ECS cluster. Use [starter-template](starter-template.json) to deploy a CloudFormation stack
 
 ```bash
 $ export AWS_REGION=eu-west-1
@@ -89,16 +89,15 @@ $ curl --silent [LOAD_BALANCER_DNS]
 
 ```
 
-- Deploy our API to the cluster
+- Deploy our API to the cluster. Refer [`snippet.json`](snippet.json) to add the following for the API:
+    - task definition
+    - service description
+    - target group
+    - listener rule
 
 ```bash
 $ cp starter-template.json template.json 
 # Edit this template.json file for all subsequent changes
-# Add the following for the API:
-    - task definition
-    - service
-    - target group
-    - listener rule
 
 # Add the information needed for stack parameters
 $ cp starter-parameters.json parameters.json
@@ -143,7 +142,7 @@ $ aws cloudformation update-stack \
 
 - Remember to delete your stack!
 
-```
+```bash
 $ aws cloudformation delete-stack --stack-name [ecs-workshop-USERNAME]
 $ aws cloudformation describe-stacks --stack-name [ecs-workshop-USERNAME]
 

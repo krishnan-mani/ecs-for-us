@@ -108,7 +108,7 @@
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "EcsSecurityGroup"
+          "Ref": "ECSALBSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "80",
@@ -270,7 +270,7 @@
         },
         "SecurityGroups": [
           {
-            "Ref": "EcsSecurityGroup"
+            "Ref": "ECSALBSecurityGroup"
           }
         ]
       }

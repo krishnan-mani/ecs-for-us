@@ -45,11 +45,12 @@ $ eval $(docker-machine env [DOCKER_MACHINE_NAME])
 
 $ docker build . -t my-service:1
 $ docker images
-$ docker run -d -p 5000:5000 my-service:1
+$ docker run --name my-service-container -d -p 5000:5000 my-service:1
 $ docker ps
 $ docker-machine ip [DOCKER_MACHINE_NAME]
 $ curl --silent [DOCKER_MACHINE_IP]:5000/example/
 # Expect a response from the API running as a container
+$ docker stop my-service-container
 
 ```
 

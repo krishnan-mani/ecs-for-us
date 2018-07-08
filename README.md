@@ -10,7 +10,7 @@ Pre-requisites
 ===
 
 - build and run Docker images locally. You may choose to use `docker-machine`, OR alternatively, native support for Dockers in Windows or Linux
-- personal account on [Dockerhub](https://hub.docker.com/)
+- personal account on [Docker Hub](https://hub.docker.com/)
 - AWS credentials for a privileged user 
 - Software installed
     - `git`
@@ -22,7 +22,7 @@ Pre-requisites
 Workshop
 ===
 
-_Note_: The instructions below assume the use of `docker-machine`. If not, you may ignore the ones that involve `docker-machine`
+_Note_: Certain instructions below assume the use of `docker-machine`. Ignore them if they are not applicable to you.
 
 - Run API locally
 
@@ -137,5 +137,13 @@ $ aws cloudformation update-stack \
     --template-body file://template.json \
     --parameters file://parameters.json \
     --capabilities CAPABILITY_IAM  
+
+```
+
+- Remember to delete your stack!
+
+```
+$ aws cloudformation delete-stack --stack-name [ecs-workshop-USERNAME]
+$ aws cloudformation describe-stacks --stack-name [ecs-workshop-USERNAME]
 
 ```

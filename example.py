@@ -4,7 +4,7 @@ app = FlaskAPI(__name__)
 
 @app.route('/example/')
 def example():
-    return {'hello': 'world', 'workshop': 'ecs'}
+    return {'hello': 'world', 'workshop': 'ecs', 'bump': true}
 
 if __name__ == "__main__":
         app.run(debug=True,host='0.0.0.0')

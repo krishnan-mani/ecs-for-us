@@ -257,7 +257,17 @@
     "ECSALB": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
-        "Name": "ECSALB",
+        "Name": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "ALB"
+            ]
+          ]
+        },
         "Scheme": "internet-facing",
         "LoadBalancerAttributes": [
           {
